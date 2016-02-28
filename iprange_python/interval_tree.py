@@ -14,25 +14,28 @@ class Segment:
 class IntervalTree:
     def __init__(self, segments):
         # get median element
-        self.x_mid = mid_element(segments, 0, len(segments))
+        self.x_mid = mid_element(segments, 0, len(segments) - 1)
         left_child = []   # left subtree intervals
         right_child = []  # right  subtree intervals
+        self.left_segments = []  # x_mid overlaps ordered by left increasing
+        self.right_segments = []  # x_mid overlaps ordered by right decreasing
         for s in segments:
             if s.right < self.x_mid:
                 left_child.append(s)
-            if s.left > self.x_mid:
+            elif s.left > self.x_mid:
                 right_child.append(s)
-            # x_mid overlaps
-            if s.right >= s.left <= self.x_mid:
+            else:
+                # x_mid overlaps
                 self.left_segments.append(s)
                 self.right_segments.append(s)
-        quick_sort(self.left_segments, 0, len(self.left_segments))
-        quick_sort(self.right_segments, 0, len(self.right_segments), lambda x, y: x.right >= y.right)
+        quick_sort(self.left_segments, 0, len(self.left_segments) - 1)
+        quick_sort(self.right_segments, 0, len(self.right_segments) - 1, lambda x, y: x.right >= y.right)
         # build subtrees
         self.left = IntervalTree(left_child) if left_child else None
         self.right = IntervalTree(right_child) if right_child else None
 
     def find(self, ip):
+        result = []
         # check subtrees
         if self.left and ip < self.x_mid:
             result = self.left.find(ip)

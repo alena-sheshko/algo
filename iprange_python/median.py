@@ -11,12 +11,11 @@ def quick_sort(lst, left, right, cmp_func=None):
 def partition(lst, left, right, cmp_func=None):
     pivot = lst[right]
     i = left
-    for j in range(left, right - 1):
-        cmp = cmp_func(lst[j], pivot) if cmp_func else lst[j] <= pivot
-        if cmp:
+    for j in range(left, right):
+        if cmp_func(lst[j], pivot) if cmp_func else lst[j] <= pivot:
             lst[i], lst[j] = lst[j], lst[i]
             i += 1
-        lst[i], lst[right] = lst[right], lst[i]
+    lst[i], lst[right] = lst[right], lst[i]
     return i
 
 
@@ -28,15 +27,15 @@ def select(lst, left, right):
 def mid_element(lst, left, right):
     # for 5 or less elements just get median
     if right - left < 5:
-        return select(lst, left, right)
+        return lst[select(lst, left, right)].left
 
     # otherwise move the medians of five-element subgroups to the first n/5 positions
     for i in range(left, right, 5):
         # get the median of the i'th five-element subgroup
-        subright = i + 4
-        if subright > right:
-            subright = right
-        median5 = select(lst, i, subright)
+        sub_right = i + 4
+        if sub_right > right:
+            sub_right = right
+        median5 = select(lst, i, sub_right)
         lst[int((i - left) / 5)], lst[median5] = lst[median5], lst[int((i - left) / 5)]
 
     # compute the median of the n/5 medians-of-five
