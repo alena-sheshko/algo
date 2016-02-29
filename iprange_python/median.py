@@ -22,7 +22,12 @@ def partition(lst, left, right, cmp_func=None):
 def select(lst, left, right):
     diff = right - left
 
+    if diff < 1:
+        return left
+
     if diff < 2:
+        if lst[left] > lst[left + 1]:
+            swap(lst, left, left + 1)
         return left
 
     if diff < 4:
@@ -31,24 +36,36 @@ def select(lst, left, right):
         if lst[left] > lst[left + 2]:
             swap(lst, left, left + 2)
         if diff == 3 and lst[left + 1] > lst[left + 3]:
-            swap(lst, left + 1 , left + 3)
+            swap(lst, left + 1, left + 3)
         return left + 1
 
-    # 5 elements
+    # 5 items
     if lst[left] > lst[left + 1]:
         swap(lst, left, left + 1)
     if lst[left + 2] > lst[left + 3]:
         swap(lst, left + 2, left + 3)
     if lst[left] > lst[left + 2]:
         swap(lst, left, left + 2)
-    if lst[left + 2] < lst[left + 4]:
-        if lst[left + 1] < lst[left + 2]:
-            return left + 2
+    if lst[left + 2] < lst[left + 4]:  # 3 < 5
+        if lst[left + 1] < lst[left + 3]:  # 2 < 4
+            if lst[left + 1] < lst[left + 2]:  # 2 < 3
+                return left + 2
+            else:
+                if lst[left + 1] < lst[left + 4]:  # 2 < 5
+                    return left + 1
+                else:
+                    return left + 4
         else:
-            return left + 1
+            if lst[left + 3] < lst[left + 4]:
+                return left + 3
+            else:
+                return left + 4
     else:
         if lst[left + 1] < lst[left + 2]:
-            return left + 1
+            if lst[left + 1] < lst[left + 4]:
+                return left + 4
+            else:
+                return left + 1
         else:
             return left + 2
 
