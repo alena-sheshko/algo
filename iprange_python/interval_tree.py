@@ -10,6 +10,12 @@ class Segment:
     def __le__(self, other):
         return self.left <= other.left
 
+    def __lt__(self, other):
+        return self.left < other.left
+
+    def __gt__(self, other):
+        return self.left > other.left
+
 
 class IntervalTree:
     def __init__(self, segments):

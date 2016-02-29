@@ -13,15 +13,48 @@ def partition(lst, left, right, cmp_func=None):
     i = left
     for j in range(left, right):
         if cmp_func(lst[j], pivot) if cmp_func else lst[j] <= pivot:
-            lst[i], lst[j] = lst[j], lst[i]
+            swap(lst, i, j)
             i += 1
-    lst[i], lst[right] = lst[right], lst[i]
+    swap(lst, i, right)
     return i
 
 
 def select(lst, left, right):
-    quick_sort(lst, left, right)
-    return left + int((right - left) / 2)
+    diff = right - left
+
+    if diff < 2:
+        return left
+
+    if diff < 4:
+        if lst[left] > lst[left + 1]:
+            swap(lst, left, left + 1)
+        if lst[left] > lst[left + 2]:
+            swap(lst, left, left + 2)
+        if diff == 3 and lst[left + 1] > lst[left + 3]:
+            swap(lst, left + 1 , left + 3)
+        return left + 1
+
+    # 5 elements
+    if lst[left] > lst[left + 1]:
+        swap(lst, left, left + 1)
+    if lst[left + 2] > lst[left + 3]:
+        swap(lst, left + 2, left + 3)
+    if lst[left] > lst[left + 2]:
+        swap(lst, left, left + 2)
+    if lst[left + 2] < lst[left + 4]:
+        if lst[left + 1] < lst[left + 2]:
+            return left + 2
+        else:
+            return left + 1
+    else:
+        if lst[left + 1] < lst[left + 2]:
+            return left + 1
+        else:
+            return left + 2
+
+
+def swap(lst , a, b):
+    lst[a], lst[b] = lst[b], lst[a]
 
 
 def mid_element(lst, left, right):
@@ -36,7 +69,7 @@ def mid_element(lst, left, right):
         if sub_right > right:
             sub_right = right
         median5 = select(lst, i, sub_right)
-        lst[int((i - left) / 5)], lst[median5] = lst[median5], lst[int((i - left) / 5)]
+        swap(lst, int((i - left) / 5), median5)
 
     # compute the median of the n/5 medians-of-five
     return mid_element(lst, left, left + math.ceil((right - left) / 5))
