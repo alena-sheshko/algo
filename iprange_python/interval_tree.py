@@ -1,4 +1,4 @@
-from median import mid_element, quick_sort
+from median import mid_element, sort
 
 
 class Segment:
@@ -34,8 +34,8 @@ class IntervalTree:
                 # x_mid overlaps
                 self.left_segments.append(s)
                 self.right_segments.append(s)
-        quick_sort(self.left_segments, 0, len(self.left_segments) - 1)
-        quick_sort(self.right_segments, 0, len(self.right_segments) - 1, lambda x, y: x.right >= y.right)
+        sort(self.left_segments, 0, len(self.left_segments) - 1)
+        sort(self.right_segments, 0, len(self.right_segments) - 1, lambda x, y: x.right > y.right)
         # build subtrees
         self.left = IntervalTree(left_child) if left_child else None
         self.right = IntervalTree(right_child) if right_child else None
