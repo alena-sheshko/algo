@@ -1,18 +1,37 @@
 import math
 
 
+def sort(lst, left, right, cmp_func=None):
+    if left >= right:
+        return
+    if right - left < 20:
+        insertion_sort(lst, left, right, cmp_func)
+    else:
+        quick_sort(lst, left, right, cmp_func)
+
+
+def insertion_sort(lst, left, right, cmp_func=None):
+    for i in range(left + 1, right + 1):
+        cur = i
+        for j in range(i - 1, -1, -1):
+            if not (cmp_func(lst[cur], lst[j]) if cmp_func else lst[cur] < lst[j]):
+                break
+            swap(lst, cur, j)
+            cur -= 1
+
+
 def quick_sort(lst, left, right, cmp_func=None):
     if left < right:
         p = partition(lst, left, right, cmp_func)
-        quick_sort(lst, left, p - 1, cmp_func)
-        quick_sort(lst, p + 1, right, cmp_func)
+        sort(lst, left, p - 1, cmp_func)
+        sort(lst, p + 1, right, cmp_func)
 
 
 def partition(lst, left, right, cmp_func=None):
     pivot = lst[right]
     i = left
     for j in range(left, right):
-        if cmp_func(lst[j], pivot) if cmp_func else lst[j] <= pivot:
+        if cmp_func(lst[j], pivot) if cmp_func else lst[j] < pivot:
             swap(lst, i, j)
             i += 1
     swap(lst, i, right)
@@ -70,7 +89,9 @@ def select(lst, left, right):
             return left + 2
 
 
-def swap(lst , a, b):
+def swap(lst, a, b):
+    if a == b:
+        return
     lst[a], lst[b] = lst[b], lst[a]
 
 
