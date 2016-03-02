@@ -12,12 +12,10 @@ def sort(lst, left, right, cmp_func=None):
 
 def insertion_sort(lst, left, right, cmp_func=None):
     for i in range(left + 1, right + 1):
-        cur = i
-        for j in range(i - 1, -1, -1):
-            if not (cmp_func(lst[cur], lst[j]) if cmp_func else lst[cur] < lst[j]):
+        for j in range(i, 0, -1):
+            if cmp_func(lst[j-1], lst[j]) if cmp_func else lst[j-1] < lst[j]:
                 break
-            swap(lst, cur, j)
-            cur -= 1
+            swap(lst, j, j-1)
 
 
 def quick_sort(lst, left, right, cmp_func=None):
