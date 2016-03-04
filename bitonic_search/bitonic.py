@@ -3,7 +3,7 @@ import random
 
 def create_bitonic(n):
     lst = []
-    div = random.randint(1, n - 1)
+    div = random.randint(2, n - 1)
     for i in range(div):
         lst.append(i)
     l = lst[-1] - 1
@@ -24,6 +24,17 @@ def find_max(lst, lo, hi):
     return mid
 
 
+def ternary_max(lst, lo, hi):
+    while hi - lo > 3:
+        a = (lo * 2 + hi) / 3
+        b = (lo + hi * 2) / 3
+        if lst[a] > lst[b]:
+            hi = b
+        else:
+            lo = a
+    return lst[int((hi + lo)/2)]
+
+
 def binary_search(lst, lo, hi, c, cmp_func):
     if lo >= hi:
         return c == lst[lo]
@@ -38,6 +49,12 @@ def binary_search(lst, lo, hi, c, cmp_func):
         return binary_search(lst, lo, mid - 1, c, cmp_func)
 
 
+def ternary_find(lst, c):
+    mid = ternary_max(lst, 0, len(lst) - 1)
+    return binary_search(lst, 0, mid, c, lambda x, y: x < y) or \
+           binary_search(lst, mid + 1, len(lst) - 1, c, lambda x, y: x > y)
+
+
 def find(lst, c):
     mid = find_max(lst, 0, len(lst) - 1)
     return binary_search(lst, 0, mid, c, lambda x, y: x < y) or \
@@ -49,4 +66,4 @@ if __name__ == '__main__':
     print('bitonic array: %s' % ','.join(map(str, array)))
     for i in range(10):
         num = random.randint(-20, 20)
-        print('search for %d: %s' % (num, find(array, num)))
+        print('%d: %sfound' % (num, '' if ternary_find(array, num) else 'not '))
