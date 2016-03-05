@@ -26,13 +26,16 @@ def find_max(lst, lo, hi):
 
 def ternary_max(lst, lo, hi):
     while hi - lo > 3:
-        a = (lo * 2 + hi) / 3
-        b = (lo + hi * 2) / 3
+        a = int((lo * 2 + hi) / 3)
+        b = int((lo + hi * 2) / 3)
         if lst[a] > lst[b]:
             hi = b
+        elif lst[a] < lst[b]:
+            lo = a
         else:
             lo = a
-    return lst[int((hi + lo)/2)]
+            hi = b
+    return max(lst[lo], lst[hi])
 
 
 def binary_search(lst, lo, hi, c, cmp_func):
