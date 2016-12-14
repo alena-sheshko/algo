@@ -19,11 +19,10 @@ class Solution(object):
 
             if slow == fast:
                 break
-        while True:
+        while slow != finder:
             slow = nums[slow]
             finder = nums[finder]
-            if slow == finder:
-                return slow
+        return slow
 
 
 def test(nums, exp):
